@@ -1,5 +1,3 @@
-// Authentication-related functions
-
 /**
  * Handle login form submission
  */
@@ -69,6 +67,9 @@ async function handleSignup(event) {
     const password = form.find('[name="password"]').val();
     const confirm_password = form.find('[name="confirm_password"]').val();
     
+    // --- NEW: Capture the Role from the dropdown ---
+    const role = form.find('[name="role"]').val(); 
+    
     // Client-side validation
     if (password !== confirm_password) {
         showToast('Passwords do not match.', 'error');
@@ -88,7 +89,8 @@ async function handleSignup(event) {
     try {
         const response = await apiRequest('/auth/signup', {
             method: 'POST',
-            body: JSON.stringify({ full_name, email, password }),
+            // --- NEW: Send the 'role' in the JSON body ---
+            body: JSON.stringify({ full_name, email, password, role }),
         });
         
         if (response.status === 201) {
@@ -172,4 +174,3 @@ function updatePasswordStrength(password) {
         </div>
     `);
 }
-
